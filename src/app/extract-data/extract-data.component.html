@@ -1,0 +1,19 @@
+<div class="email-container">
+    <button (click)="extractEmailData()">Extract Data from Email</button>
+    @if (isLoading) {
+        <div class="loading-message">Loading email data...</div>
+    }
+    @if (!isLoading && subject && body) {
+        <div class="email-content">
+            <h3>Email Details</h3>
+            <div class="email-section">
+            <label>Subject:</label>
+            <p>{{ subject }}</p>
+            </div>
+            <div class="email-section">
+            <label>Body:</label>
+            <p>{{ body }}</p>
+            </div>
+        </div>
+    }
+</div>
