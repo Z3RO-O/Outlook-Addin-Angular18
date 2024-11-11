@@ -1,19 +1,27 @@
-<div class="email-container">
-    <button (click)="extractEmailData()">Extract Data from Email</button>
-    @if (isLoading) {
-        <div class="loading-message">Loading email data...</div>
-    }
-    @if (!isLoading && subject && body) {
-        <div class="email-content">
-            <h3>Email Details</h3>
-            <div class="email-section">
-            <label>Subject:</label>
-            <p>{{ subject }}</p>
-            </div>
-            <div class="email-section">
-            <label>Body:</label>
-            <p>{{ body }}</p>
-            </div>
+<div id="extractData">
+    <div class="label-container">
+        <label for="subject">Subject:</label>
+        <div id="subject" class="display-field">{{ subject || 'No subject' }}</div>
+    </div>
+
+    <div class="label-container">
+        <label for="body">Body:</label>
+        <div id="body" class="display-field">{{ body || 'No body content' }}</div>
+    </div>
+
+    <div>
+        <h3>Image Preview:</h3>
+        <div id="image-preview-container">
+            @if (noAttachments) {
+                <p>No Image Extracted.</p>
+            }
+            @if (imagePreviewSrc) {
+                <img [src]="imagePreviewSrc" alt="Preview of uploaded image" style="max-width: 100%; height: auto;" />
+            }
         </div>
-    }
+    </div>
+
+    <button id="btn" (click)="extractEmailData()">
+        {{loading ? 'Extracting Data...' : 'Extract Email Data'}}
+    </button>
 </div>

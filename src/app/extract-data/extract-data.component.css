@@ -1,78 +1,53 @@
-.email-container {
-  max-width: 600px;
-  margin: 20px auto;
-  padding: 20px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  font-family: Arial, sans-serif;
+#extractData {
+  padding: 6px;
+  font-family: 'Roboto', sans-serif;
 }
 
-button {
-  display: inline-block;
-  padding: 10px 20px;
-  font-size: 16px;
-  color: #fff;
-  background-color: #0078d4;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: background-color 0.3s;
-}
-
-button:hover {
-  background-color: #005a9e;
-}
-
-/* Loading message style */
-.loading-message {
-  margin-top: 20px;
-  text-align: center;
-  font-size: 18px;
-  color: #0078d4;
-  font-weight: bold;
-  position: relative;
-}
-
-.loading-message::after {
-  content: '...';
-  animation: loadingDots 1.5s infinite;
-  position: absolute;
-}
-
-/* Keyframes for the loading dots animation */
-@keyframes loadingDots {
-  0% {
-    content: '';
-  }
-  33% {
-    content: '.';
-  }
-  66% {
-    content: '..';
-  }
-  100% {
-    content: '...';
-  }
-}
-
-.email-content {
-  margin-top: 20px;
-}
-
-.email-section {
-  margin-bottom: 10px;
-}
-
-label {
-  font-weight: bold;
+.heading {
+  font-weight: 700;
   color: #333;
 }
 
-p {
-  margin: 5px 0;
-  padding: 10px;
-  background-color: #f5f5f5;
+.loading {
+  display: inline-block;
+  color: #f36;
+  font-weight: bold;
+  margin-top: 10px;
+}
+
+.label-container {
+  margin-top: 12px;
+}
+
+.display-field {
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
   border-radius: 4px;
-  color: #555;
+  padding: 8px;
+  color: #333;
+  max-height: 150px;
+  overflow-y: auto;
+  white-space: pre-wrap;
+}
+
+#btn {
+  background-color: #f36;
+  color: #fff;
+  margin-top: 8px;
+  padding: 8px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+#image-preview-container {
+  border: #f36 2px solid;
+  padding: 6px;
+  border-radius: 4px;
+}
+
+#image-preview-container img {
+  max-width: 100%;
+  height: auto;
 }

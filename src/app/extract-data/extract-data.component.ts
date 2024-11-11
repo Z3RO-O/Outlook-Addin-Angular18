@@ -8,50 +8,87 @@ import { Component } from '@angular/core';
   styleUrls: ['./extract-data.component.css']
 })
 export class ExtractDataComponent {
-  subject: string | null = null;
-  body: string | null = null;
-  isLoading: boolean = false;
+  loading: boolean = false;
+  subject: string = '';
+  body: string = '';
+  imagePreviewSrc: string | null = null;
+  noAttachments: boolean = true;
 
-  async extractEmailData(): Promise<void> {
-    if (Office && Office.context && Office.context.mailbox) {
-      const item = Office.context.mailbox.item;
-
-      if (item && item.itemType === Office.MailboxEnums.ItemType.Message) {
-        const message = item as Office.MessageRead;
-
-        this.isLoading = true;
-
-        this.subject = message.subject || "No subject";
-
-        try {
-          this.body = await this.getBodyAsync(message);
-        } catch (error) {
-          console.error("Failed to get email body:", error);
-          this.body = "Failed to retrieve email data";
-        }
-
-        this.isLoading = false;
-      } else {
-        this.subject = "No email item is selected";
-        this.body = null;
+  ngOnInit(): void {
+    Office.onReady((info: any) => {
+      if (info.host === Office.HostType.Outlook) {
+        // Office is ready to interact with
       }
-    } else {
-      console.error("Office.js is not available");
-      this.subject = "Office.js is not available";
-      this.body = null;
+    });
+  }
+
+  extractEmailData() {
+    this.loading = true;
+    this.imagePreviewSrc = null;
+
+    const item = Office.context.mailbox.item;
+
+    if(item){
+      this.subject = item.subject || 'No subject';
+      this.getEmailBody(item).then((body) => {
+        this.body = body || 'No body content';
+        return this.retrieveFirstImageAttachment(item);
+      }).then(() => {
+        this.loading = false;
+      }).catch((error) => {
+        console.error("Error extracting email data:", error);
+        this.loading = false;
+      });
     }
   }
 
-  // Helper method to wrap getAsync in a Promise
-  private getBodyAsync(message: Office.MessageRead): Promise<string> {
+  getEmailBody(item: any): Promise<string> {
     return new Promise((resolve, reject) => {
-      message.body.getAsync(Office.CoercionType.Text, (result) => {
-        if (result.status === Office.AsyncResultStatus.Succeeded) {
-          resolve(result.value as string);
-        } else {
-          reject(result.error.message);
-        }
-      });
+      if (item.body) {
+        item.body.getAsync(Office.CoercionType.Text, (result: any) => {
+          if (result.status === Office.AsyncResultStatus.Succeeded) {
+            resolve(result.value);
+          } else {
+            reject("Failed to retrieve body content");
+          }
+        });
+      } else {
+        resolve('No body content');
+      }
     });
+  }
+
+  retrieveFirstImageAttachment(item: any): Promise<void> {
+    return new Promise((resolve, reject) => {
+      const attachments = item.attachments;
+
+      if (attachments && attachments.length > 0) {
+        const firstImageAttachment = attachments.find((att: any) => att.contentType && att.contentType.startsWith("image/"));
+
+        if (firstImageAttachment) {
+          item.getAttachmentContentAsync(firstImageAttachment.id, (result: any) => {
+            if (result.status === Office.AsyncResultStatus.Succeeded && result.value) {
+              this.displayAttachment(result.value.content, result.value.format);
+              this.noAttachments = false;
+              resolve();
+            } else {
+              reject("Failed to retrieve image attachment content");
+            }
+          });
+        } else {
+          resolve();
+        }
+      } else {
+        resolve();
+      }
+    });
+  }
+
+  displayAttachment(content: string, format: string) {
+    if (format === Office.MailboxEnums.AttachmentContentFormat.Base64) {
+      this.imagePreviewSrc = `data:image/png;base64,${content}`;
+    } else if (format === Office.MailboxEnums.AttachmentContentFormat.Url) {
+      this.imagePreviewSrc = content;
+    }
   }
 }

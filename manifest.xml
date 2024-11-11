@@ -4,7 +4,7 @@
   <Version>1.0.0.0</Version>
   <ProviderName>Contoso</ProviderName>
   <DefaultLocale>en-US</DefaultLocale>
-  <DisplayName DefaultValue="Test AddIn"/>
+  <DisplayName DefaultValue="Angular Add-in"/>
   <Description DefaultValue="A template to get started."/>
   <IconUrl DefaultValue="https://localhost:4200/assets/icon-64.png"/>
   <HighResolutionIconUrl DefaultValue="https://localhost:4200/assets/icon-128.png"/>
@@ -78,7 +78,7 @@
         <bt:Url id="Taskpane.Url" DefaultValue="https://localhost:4200/index.html"/>
       </bt:Urls>
       <bt:ShortStrings>
-        <bt:String id="GroupLabel" DefaultValue="Test Add-in"/>
+        <bt:String id="GroupLabel" DefaultValue="Angular Add-in"/>
         <bt:String id="TaskpaneButton.Label" DefaultValue="Show Task Pane"/>
       </bt:ShortStrings>
       <bt:LongStrings>

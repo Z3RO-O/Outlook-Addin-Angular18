@@ -10,5 +10,5 @@ import { ExtractDataComponent } from './extract-data/extract-data.component';
   styleUrl: './app.component.css'
 })
 export class AppComponent {
-  title = 'testAngular';
+  title = 'Angular Add-in';
 }
